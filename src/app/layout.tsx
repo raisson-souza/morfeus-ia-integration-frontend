@@ -1,9 +1,10 @@
 import "./globals.css"
+import AuthContextComponent from "@/contexts/AuthContext"
 import InitialContextComponent from "@/contexts/InitialContexts"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Project Template Web",
+  title: "Morfeus IA",
   description: "Developed by Raisson",
 }
 
@@ -16,7 +17,9 @@ export default function RootLayout({
     <html lang="pt-br">
       <body>
         <InitialContextComponent>
-          { children }
+          <AuthContextComponent>
+            { children }
+          </AuthContextComponent>
         </InitialContextComponent>
       </body>
     </html>

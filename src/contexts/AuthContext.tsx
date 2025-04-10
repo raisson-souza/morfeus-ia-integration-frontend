@@ -1,6 +1,9 @@
 "use client"
 
 import { createContext, useContext, useEffect, useState } from "react"
+import { LocalStorage } from "@/config/LocalStorage"
+import { useRouter } from "next/navigation"
+import AuthService from "@/services/api/AuthService"
 import Screen from "@/components/base/Screen"
 
 type AuthContextProps = {
@@ -12,9 +15,7 @@ type AuthContext = {
     /** Usando com o hook useTransition, pode não realizar um refresh no componente se necessário */
     setIsLogged: React.Dispatch<React.SetStateAction<boolean>>
     /** Função para login */
-    login: (credentials: any) => Promise<void>
-    /** Função para cadastro */
-    register: (credentials: any) => Promise<void>
+    login: () => Promise<void>
     /** Função para logoff */
     logoff: () => Promise<void>
 }
@@ -23,18 +24,44 @@ const AuthContext = createContext<AuthContext | null>(null)
 
 /** Context de autenticação, realiza o refresh do token de autenticação e valida credenciais no localStorage */
 export default function AuthContextComponent({ children }: AuthContextProps) {
-    const [ loading, setLoading ] = useState<boolean>(false)
+    const router = useRouter()
+    const [ loading, setLoading ] = useState<boolean>(true)
     const [ isLogged, setIsLogged ] = useState<boolean>(false)
 
+    const manageAuth = () => {
+        const token = LocalStorage.apiToken.get()
+
+        if (token) {
+            setIsLogged(true)
+            router.push("/home")
+        }
+
+        setLoading(false)
+    }
+
     useEffect(() => {
-        // TODO: Regras de negócio para autenticação
+        manageAuth()
     }, [])
 
-    const login = async (credentials: any): Promise<void> => { }
+    const login = async (): Promise<void> => {
+        setLoading(true)
+        await AuthService.DirectAccess()
+            .then(response => {
+                if (response.Success) {
+                    console.log("res", response)
+                    setIsLogged(true)
+                    LocalStorage.apiToken.set(response.Data)
+                    router.push("/home")
+                    return
+                }
+                alert(response.ErrorMessage)
+            })
+            .finally(() => setLoading(false))
+    }
 
-    const register = async (credentials: any): Promise<void> => { }
+    const logoff = async (): Promise<void> => {
 
-    const logoff = async (): Promise<void> => { }
+    }
 
     if (loading) {
         return (
@@ -49,7 +76,6 @@ export default function AuthContextComponent({ children }: AuthContextProps) {
             isLogged,
             setIsLogged,
             login,
-            register,
             logoff,
         }}>
             { children }

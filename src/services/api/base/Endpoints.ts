@@ -1,4 +1,5 @@
 import { DeleteProps, GetProps, PostProps, PutProps, RequestHeader } from "./EndpointProps"
+import { LocalStorage } from "@/config/LocalStorage"
 import env from "../../../config/env"
 import Response from "./Response"
 
@@ -102,5 +103,9 @@ export default abstract class Endpoints {
             body,
             method: "DELETE"
         })
+    }
+
+    protected static GetAuthorization(): string | null {
+        return LocalStorage.apiToken.get()
     }
 }
