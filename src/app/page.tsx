@@ -3,6 +3,7 @@
 import { AuthContextProvider } from "@/contexts/AuthContext"
 import Box from "@/components/base/Box"
 import CustomButton from "@/components/customs/CustomButton"
+import Header from "@/components/ScreenCustoms/header"
 import Screen from "@/components/base/Screen"
 
 export default function ExternalHome() {
@@ -14,12 +15,7 @@ export default function ExternalHome() {
 
   return (
     <Screen
-      headerComponent={
-        <Box.Row>
-          <h1>MORFEUS IA</h1>
-          <h3>Acessar App</h3>
-        </Box.Row>
-      }
+      headerComponent={ <Header /> }
     >
       <Box.Column>
         <Box.Column>
