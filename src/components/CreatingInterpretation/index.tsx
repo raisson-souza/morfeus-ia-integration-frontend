@@ -8,20 +8,22 @@ import InterpretationService from "@/services/api/InterpretationService"
 type CreatingInterpretationProps = {
     setInterpretationId: Dispatch<SetStateAction<number | null>>
     setIsCreating: Dispatch<SetStateAction<boolean>>
+    fetchAllInterpretations: () => Promise<void>
 }
 
 export default function CreatingInterpretation({
     setInterpretationId,
     setIsCreating,
+    fetchAllInterpretations,
 }: CreatingInterpretationProps) {
     const [ dreamTitle, setDreamTitle ] = useState<string>("")
     const [ dreamDescription, setDreamDescription ] = useState<string>("")
 
     const createDreamDescription = async () => {
         await InterpretationService.CreateInterpretation(dreamTitle, dreamDescription)
-            .then(response => {
-                console.log("response", response)
+            .then(async (response) => {
                 if (response.Success) {
+                    await fetchAllInterpretations()
                     setInterpretationId(response.Data.id)
                     setIsCreating(false)
                     return

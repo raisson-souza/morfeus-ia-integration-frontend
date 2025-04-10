@@ -48,6 +48,7 @@ export default function InternalHome() {
                 ? <CreatingInterpretation
                     setIsCreating={ setIsCreating }
                     setInterpretationId={ setInterpretationId }
+                    fetchAllInterpretations={ fetchAllInterpretations }
                 />
                 : <SelectedInterpretation
                     interpretationId={ interpretationId! }

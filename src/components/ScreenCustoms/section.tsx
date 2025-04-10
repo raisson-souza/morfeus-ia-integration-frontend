@@ -18,7 +18,14 @@ export default function Section({
     setIsCreating,
 }: SectionProps) {
     const parseDate = (date: string) => {
-        return date
+        try {
+            const parsedDate = date.replace("-03:00", "").split(".")[0].split("T")[0].split("-")
+            const parsedTime = date.replace("-03:00", "").split(".")[0].split("T")[1]
+            return `${ parsedDate[2] }/${ parsedDate[1] }/${ parsedDate[0] } ${ parsedTime }`
+        }
+        catch {
+            return "---"
+        }
     }
 
     const redirectToInterpretation = (id: number) => {
