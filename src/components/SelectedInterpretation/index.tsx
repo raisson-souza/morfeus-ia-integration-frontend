@@ -34,7 +34,7 @@ export default function SelectedInterpretation({
 
     useEffect(() => {
         fetchInterpretation()
-    }, [])
+    }, [interpretationId])
 
     const renderMessage = (
         msg: string | null,
