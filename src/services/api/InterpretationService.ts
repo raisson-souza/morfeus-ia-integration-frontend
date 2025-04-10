@@ -4,35 +4,39 @@ import Endpoints from "./base/Endpoints"
 export default abstract class InterpretationService extends Endpoints {
     static async CreateInterpretation(title: string, dream: string) {
         return await this.Post<Interpretation>({
-            url: "/interpretations/",
+            url: "/interpretation/",
             authorization: this.GetAuthorization() ?? undefined,
+            body: {
+                "dream": dream,
+                "title": title,
+            }
         })
     }
 
     static async GetInterpretation(id: number) {
         return await this.Get<Interpretation>({
-            url: `/interpretations/get/${ id }`,
+            url: `/interpretation/get/${ id }`,
             authorization: this.GetAuthorization() ?? undefined,
         })
     }
 
-    static async ListInterpretations() {
+    static async ListInterpretation() {
         return await this.Get<InterpretationListed[]>({
-            url: "/interpretations/list",
+            url: "/interpretation/list",
             authorization: this.GetAuthorization() ?? undefined,
         })
     }
 
     static async GetInterpretationImage(id: number) {
         return await this.Get<string>({
-            url: `/interpretations/get_interpretation_image/${ id }`,
+            url: `/interpretation/get_interpretation_image/${ id }`,
             authorization: this.GetAuthorization() ?? undefined,
         })
     }
 
     static async CreateInterpretationByAudio() {
         return await this.Post<Interpretation>({
-            url: "/interpretations/interpretation_by_audio",
+            url: "/interpretation/interpretation_by_audio",
             authorization: this.GetAuthorization() ?? undefined,
         })
     }

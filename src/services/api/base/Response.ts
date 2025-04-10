@@ -38,6 +38,6 @@ export default class Response<T> {
         this.Status = status
         this.Success = status < 400
         this.Data = data["data"]
-        this.ErrorMessage = fetchError
+        this.ErrorMessage = fetchError ? fetchError : data["data"]
     }
 }
