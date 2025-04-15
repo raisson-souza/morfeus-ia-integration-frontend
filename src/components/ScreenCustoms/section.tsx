@@ -39,17 +39,29 @@ export default function Section({
             return <p>Nenhuma interpretação realizada.</p>
 
         return interpretations.map((interpretation, i) => (
-            <Box.Row
+            <Box.Column
                 onClick={() => redirectToInterpretation(interpretation.id)}
                 key={ i }
+                style={{
+                    borderBottom: "1px solid white",
+                }}
             >
-                <p style={{
-                    color: theme.textColor,
-                }}>{ interpretation.title }</p>
-                <p style={{
-                    color: theme.textColor,
-                }}>{ parseDate(interpretation.createdAt) }</p>
-            </Box.Row>
+                <p
+                    style={{
+                        color: theme.textColor,
+                    }}
+                >
+                    { interpretation.title }
+                </p>
+                <p
+                    style={{
+                        color: theme.textColor,
+                        fontSize: 12,
+                    }}
+                >
+                    { parseDate(interpretation.createdAt) }
+                </p>
+            </Box.Column>
         ))
     }
 
@@ -57,12 +69,23 @@ export default function Section({
         style={{
             backgroundColor: theme.primary,
             width: "100%",
+            paddingTop: 5,
         }}
     >
-        <h2 style={{
-            color: theme.textColor
-        }}>Seus Sonhos</h2>
-        <Box.Column>
+        <h2
+            style={{
+                color: theme.textColor,
+                paddingLeft: 5,
+            }}
+        >
+            Seus Sonhos
+        </h2>
+        <Box.Column
+            style={{
+                gap: 5,
+                paddingTop: 10,
+            }}
+        >
             {
                 loading
                     ? <p>Carregando interpretações...</p>
