@@ -5,6 +5,7 @@ import { theme } from "@/theme"
 import Box from "../base/Box"
 import CustomButton from "../customs/CustomButton"
 import InterpretationService from "@/services/api/InterpretationService"
+import Loading from "@/assets/loading"
 
 type CreatingInterpretationProps = {
     setInterpretationId: Dispatch<SetStateAction<number | null>>
@@ -19,8 +20,10 @@ export default function CreatingInterpretation({
 }: CreatingInterpretationProps) {
     const [ dreamTitle, setDreamTitle ] = useState<string>("")
     const [ dreamDescription, setDreamDescription ] = useState<string>("")
+    const [ creating, setCreating ] = useState<boolean>(false)
 
     const createDreamDescription = async () => {
+        setCreating(true)
         await InterpretationService.CreateInterpretation(dreamTitle, dreamDescription)
             .then(async (response) => {
                 if (response.Success) {
@@ -31,6 +34,7 @@ export default function CreatingInterpretation({
                 }
                 alert(response.ErrorMessage)
             })
+            .finally(() => setCreating(false))
     }
 
     return <Box.Column
@@ -59,13 +63,19 @@ export default function CreatingInterpretation({
                 value={dreamDescription}
                 onChange={(e) => setDreamDescription(e.target.value)}
             />
-            <CustomButton
-                msg="Enviar"
-                onClick={async () => await createDreamDescription()}
-            />
-            <CustomButton
-                msg="Enviar Áudio"
-            />
+            {
+                creating
+                    ? <Loading />
+                    : <>
+                        <CustomButton
+                            msg="Enviar"
+                            onClick={async () => await createDreamDescription()}
+                        />
+                        <CustomButton
+                            msg="Enviar Áudio"
+                        />
+                    </>
+            }
         </Box.Column>
     </Box.Column>
 }

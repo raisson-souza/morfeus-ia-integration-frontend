@@ -7,6 +7,7 @@ import Box from "../base/Box"
 import CustomButton from "../customs/CustomButton"
 import env from "@/config/env"
 import InterpretationService from "@/services/api/InterpretationService"
+import Loading from "@/assets/loading"
 import ReactMarkdown from 'react-markdown'
 
 type RenderMessageProps = {
@@ -98,11 +99,20 @@ export default function SelectedInterpretation({
     return <Box.Column
         style={{
             backgroundColor: theme.secondary,
+            width: "100%",
         }}
     >
         {
             loading
-                ? <h2>Carregando...</h2>
+                ? <Box.Center
+                    style={{
+                        width: "100%",
+                        alignSelf: "center",
+                        paddingTop: 60,
+                    }}
+                >
+                    <Loading />
+                </Box.Center>
                 : <Box.Column
                     style={{
                         paddingTop: 15,
@@ -130,20 +140,20 @@ export default function SelectedInterpretation({
                     >
                         <ReactMarkdown>{ interpretation?.dreamPsychoanalysisInterpretation }</ReactMarkdown>
                     </RenderMessage>
-                    {
-                        imagePath
-                            ? <RenderMessage
-                                title="Imagem Descritiva do Sonho"
-                                side="ai"
-                            >
-                                <img
+                    <RenderMessage
+                        title="Imagem Descritiva do Sonho"
+                        side="ai"
+                    >
+                        {
+                            imagePath
+                                ? <img
                                     src={ imagePath }
                                     width={400}
                                     height={400}
                                 />
-                            </RenderMessage>
-                            : <></>
-                    }
+                                : <p>Não foi possível gerar a imagem.</p>
+                        }
+                    </RenderMessage>
                     <RenderMessage
                         title=""
                         side="user"

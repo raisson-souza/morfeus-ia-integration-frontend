@@ -3,6 +3,7 @@
 import { InterpretationListed } from "@/types/interpretation"
 import { theme } from "@/theme"
 import Box from "../base/Box"
+import Loading from "@/assets/loading"
 import React, { Dispatch, SetStateAction } from "react"
 
 type SectionProps = {
@@ -88,7 +89,7 @@ export default function Section({
         >
             {
                 loading
-                    ? <p>Carregando interpretações...</p>
+                    ? <Loading />
                     : renderInterpretations()
             }
         </Box.Column>
