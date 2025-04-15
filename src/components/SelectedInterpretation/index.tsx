@@ -2,10 +2,12 @@
 
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { Interpretation } from "@/types/interpretation"
+import { theme } from "@/theme"
 import Box from "../base/Box"
 import CustomButton from "../customs/CustomButton"
 import env from "@/config/env"
 import InterpretationService from "@/services/api/InterpretationService"
+import ReactMarkdown from 'react-markdown'
 
 type SelectedInterpretationProps = {
     interpretationId: number
@@ -41,14 +43,33 @@ export default function SelectedInterpretation({
         title: string | null,
         side: "user" | "ai"
     ) => {
-        return <p>teste</p>
+        if (!msg) return <></>
+
+        return <Box.Column
+            style={{
+                color: "white",
+            }}
+        >
+            {
+                title
+                    ? <h3 style={{
+                        color: theme.textColor,
+                    }}>{ title }</h3>
+                    : <></>
+            }
+            <ReactMarkdown >{ msg }</ReactMarkdown>
+        </Box.Column>
     }
 
     const imagePath = (interpretation?.imagePath ?? null)
         ? `${ env.BackendUrl().replace("api", "") }${ interpretation!.imagePath }.png`
         : null
 
-    return <Box.Column>
+    return <Box.Column
+        style={{
+            backgroundColor: theme.secondary,
+        }}
+    >
         <CustomButton
             msg="Criar Nova Interpretação"
             onClick={() => setIsCreating(true)}

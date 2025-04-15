@@ -1,6 +1,7 @@
 "use client"
 
 import { Dispatch, SetStateAction, useState } from "react"
+import { theme } from "@/theme"
 import Box from "../base/Box"
 import CustomButton from "../customs/CustomButton"
 import InterpretationService from "@/services/api/InterpretationService"
@@ -32,10 +33,19 @@ export default function CreatingInterpretation({
             })
     }
 
-    return <Box.Column>
+    return <Box.Column
+        style={{
+            backgroundColor: theme.secondary,
+            width: "100%",
+        }}
+    >
         <Box.Column>
-            <h1>Descreva seu sonho.</h1>
-            <h3>Receba duas interpretações e uma imagem descritiva de uma IA!</h3>
+            <h1 style={{
+                color: theme.textColor,
+            }}>Descreva seu sonho.</h1>
+            <h3 style={{
+                color: theme.textColor,
+            }}>Receba duas interpretações e uma imagem descritiva de uma IA!</h3>
             <input
                 type="text"
                 autoFocus

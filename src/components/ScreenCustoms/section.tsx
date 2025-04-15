@@ -1,6 +1,7 @@
 "use client"
 
 import { InterpretationListed } from "@/types/interpretation"
+import { theme } from "@/theme"
 import Box from "../base/Box"
 import React, { Dispatch, SetStateAction } from "react"
 
@@ -42,14 +43,25 @@ export default function Section({
                 onClick={() => redirectToInterpretation(interpretation.id)}
                 key={ i }
             >
-                <p>{ interpretation.title }</p>
-                <p>{ parseDate(interpretation.createdAt) }</p>
+                <p style={{
+                    color: theme.textColor,
+                }}>{ interpretation.title }</p>
+                <p style={{
+                    color: theme.textColor,
+                }}>{ parseDate(interpretation.createdAt) }</p>
             </Box.Row>
         ))
     }
 
-    return <Box.Column>
-        <h2>Seus Sonhos</h2>
+    return <Box.Column
+        style={{
+            backgroundColor: theme.primary,
+            width: "100%",
+        }}
+    >
+        <h2 style={{
+            color: theme.textColor
+        }}>Seus Sonhos</h2>
         <Box.Column>
             {
                 loading

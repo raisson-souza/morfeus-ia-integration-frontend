@@ -79,10 +79,9 @@ export default function Screen({
             <section style={{
                 display: "flex",
                 flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
                 alignSelf: sectionPosition === "top" ? "flex-start" : "unset",
                 width: "25%",
+                height: "100%",
             }}>
                 { sectionComponent }
             </section>
@@ -126,7 +125,7 @@ export default function Screen({
             style={{
                 display: "flex",
                 flexDirection: "column",
-                minHeight: "100vh",
+                height: "100vh",
             }}
         >
             { header }
@@ -136,7 +135,6 @@ export default function Screen({
                 justifyContent: hasSection
                     ? childrenPositionJustifiedContent
                     : "center",
-                alignItems: "center",
                 width: "100%",
             }}>
                 { _section }
