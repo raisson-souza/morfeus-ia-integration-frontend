@@ -75,12 +75,43 @@ export default function SelectedInterpretation({
         >
             {
                 title
-                    ? <h3 style={{
+                    ? <h2 style={{
                         color: theme.textColor,
-                    }}>{ title }</h3>
+                    }}>{ title }</h2>
                     : <></>
             }
             <ReactMarkdown >{ msg }</ReactMarkdown>
+        </Box.Column>
+    }
+
+    const renderImage = () => {
+        if (!imagePath) return <></>
+
+        return <Box.Column
+            style={{
+                width: "75%",
+                borderBottomLeftRadius: 15,
+                borderBottomRightRadius: 15,
+                backgroundColor: theme.quaternary,
+                alignSelf: "flex-start",
+                marginLeft: 20,
+                padding: 10,
+                borderTopRightRadius: 15,
+                gap: 10,
+            }}
+        >
+            <h2
+                style={{
+                    color: theme.textColor,
+                }}
+            >
+                Imagem descritiva do sonho:
+            </h2>
+            <img
+                src={ imagePath }
+                width={400}
+                height={400}
+            />
         </Box.Column>
     }
 
@@ -105,15 +136,7 @@ export default function SelectedInterpretation({
                     { renderMessage(interpretation!.dream, interpretation!.title, "user") }
                     { renderMessage(interpretation!.dreamOntopsychologyInterpretation, "Interpretação Ontopsicológica", "ai") }
                     { renderMessage(interpretation!.dreamPsychoanalysisInterpretation, "Interpretação Psicanalística", "ai") }
-                    {
-                        imagePath
-                            ? <img
-                                src={ imagePath }
-                                width={200}
-                                height={200}
-                            />
-                            : <></>
-                    }
+                    { renderImage() }
                     <CustomButton
                         msg="Criar Nova Interpretação"
                         onClick={() => setIsCreating(true)}
