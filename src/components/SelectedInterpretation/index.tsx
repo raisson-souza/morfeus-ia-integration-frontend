@@ -9,6 +9,13 @@ import env from "@/config/env"
 import InterpretationService from "@/services/api/InterpretationService"
 import ReactMarkdown from 'react-markdown'
 
+type RenderMessageProps = {
+    children: JSX.Element
+    title: string
+    side: "user" | "ai"
+    hasMdPaddingFix?: boolean
+}
+
 type SelectedInterpretationProps = {
     interpretationId: number
     setIsCreating: Dispatch<SetStateAction<boolean>>
@@ -38,13 +45,12 @@ export default function SelectedInterpretation({
         fetchInterpretation()
     }, [interpretationId])
 
-    const renderMessage = (
-        msg: string | null,
-        title: string | null,
-        side: "user" | "ai"
-    ) => {
-        if (!msg) return <></>
-
+    const RenderMessage = ({
+        children,
+        title,
+        side,
+        hasMdPaddingFix = false,
+    }: RenderMessageProps) => {
         const customStyle = side === "user"
             ? {
                 backgroundColor: theme.terciary,
@@ -57,7 +63,7 @@ export default function SelectedInterpretation({
                 backgroundColor: theme.quaternary,
                 alignSelf: "flex-start",
                 marginLeft: 20,
-                paddingLeft: 26, // Correção do markdown
+                paddingLeft: hasMdPaddingFix ? 26 : 10,
                 paddingRight: 10,
                 paddingTop: 10,
                 paddingBottom: 10,
@@ -70,34 +76,8 @@ export default function SelectedInterpretation({
                 width: "75%",
                 borderBottomLeftRadius: 15,
                 borderBottomRightRadius: 15,
-                ...customStyle,
-            }}
-        >
-            {
-                title
-                    ? <h2 style={{
-                        color: theme.textColor,
-                    }}>{ title }</h2>
-                    : <></>
-            }
-            <ReactMarkdown >{ msg }</ReactMarkdown>
-        </Box.Column>
-    }
-
-    const renderImage = () => {
-        if (!imagePath) return <></>
-
-        return <Box.Column
-            style={{
-                width: "75%",
-                borderBottomLeftRadius: 15,
-                borderBottomRightRadius: 15,
-                backgroundColor: theme.quaternary,
-                alignSelf: "flex-start",
-                marginLeft: 20,
-                padding: 10,
-                borderTopRightRadius: 15,
                 gap: 10,
+                ...customStyle,
             }}
         >
             <h2
@@ -105,13 +85,9 @@ export default function SelectedInterpretation({
                     color: theme.textColor,
                 }}
             >
-                Imagem descritiva do sonho:
+                { title }
             </h2>
-            <img
-                src={ imagePath }
-                width={400}
-                height={400}
-            />
+            { children }
         </Box.Column>
     }
 
@@ -130,17 +106,54 @@ export default function SelectedInterpretation({
                 : <Box.Column
                     style={{
                         paddingTop: 15,
+                        paddingBottom: 15,
                         gap: 10,
                     }}
                 >
-                    { renderMessage(interpretation!.dream, interpretation!.title, "user") }
-                    { renderMessage(interpretation!.dreamOntopsychologyInterpretation, "Interpretação Ontopsicológica", "ai") }
-                    { renderMessage(interpretation!.dreamPsychoanalysisInterpretation, "Interpretação Psicanalística", "ai") }
-                    { renderImage() }
-                    <CustomButton
-                        msg="Criar Nova Interpretação"
-                        onClick={() => setIsCreating(true)}
-                    />
+                    <RenderMessage
+                        title={ `Sonho "${ interpretation?.title }"` }
+                        side="user"
+                    >
+                        <p>{ interpretation?.dream }</p>
+                    </RenderMessage>
+                    <RenderMessage
+                        title="Interpretação Ontopsicológica"
+                        side="ai"
+                        hasMdPaddingFix
+                    >
+                        <ReactMarkdown>{ interpretation?.dreamOntopsychologyInterpretation }</ReactMarkdown>
+                    </RenderMessage>
+                    <RenderMessage
+                        title="Interpretação Psicanalítica"
+                        side="ai"
+                        hasMdPaddingFix
+                    >
+                        <ReactMarkdown>{ interpretation?.dreamPsychoanalysisInterpretation }</ReactMarkdown>
+                    </RenderMessage>
+                    {
+                        imagePath
+                            ? <RenderMessage
+                                title="Imagem Descritiva do Sonho"
+                                side="ai"
+                            >
+                                <img
+                                    src={ imagePath }
+                                    width={400}
+                                    height={400}
+                                />
+                            </RenderMessage>
+                            : <></>
+                    }
+                    <RenderMessage
+                        title=""
+                        side="user"
+                    >
+                        <CustomButton
+                            msg="Criar Nova Interpretação"
+                            onClick={() => setIsCreating(true)}
+                            color={ theme.textColor }
+                        />
+                    </RenderMessage>
                 </Box.Column>
         }
     </Box.Column>
