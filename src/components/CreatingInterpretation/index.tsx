@@ -43,18 +43,29 @@ export default function CreatingInterpretation({
             width: "100%",
         }}
     >
-        <Box.Column>
-            <h1 style={{
-                color: theme.textColor,
-            }}>Descreva seu sonho.</h1>
-            <h3 style={{
-                color: theme.textColor,
-            }}>Receba duas interpretações e uma imagem descritiva de uma IA!</h3>
+        <Box.Column
+            style={{
+                width: "80%",
+                alignSelf: "center",
+                marginTop: 30,
+                padding: 20,
+                borderRadius: 15,
+                backgroundColor: theme.terciary,
+                gap: 10,
+            }}
+        >
+            <h1 style={{ color: theme.textColor }}>Descreva seu sonho.</h1>
+            <h3 style={{ color: theme.textColor }}>Receba duas interpretações e uma imagem descritiva de uma IA!</h3>
             <input
                 type="text"
-                autoFocus
+                placeholder="Título do Sonho..."
                 value={dreamTitle}
                 onChange={(e) => setDreamTitle(e.target.value)}
+                style={{
+                    background: theme.quaternary,
+                    color: theme.textColor,
+                    height: 30,
+                }}
             />
             <input
                 type="text"
@@ -62,17 +73,28 @@ export default function CreatingInterpretation({
                 placeholder="Sonhei que estava..."
                 value={dreamDescription}
                 onChange={(e) => setDreamDescription(e.target.value)}
+                style={{
+                    background: theme.quaternary,
+                    color: theme.textColor,
+                    height: 30,
+                }}
             />
             {
                 creating
-                    ? <Loading />
+                    ? <Box.Center style={{ alignSelf: "center", paddingTop: 20 }}>
+                        <Loading />
+                    </Box.Center>
                     : <>
                         <CustomButton
-                            msg="Enviar"
+                            msg="CRIAR INTERPRETAÇÃO"
                             onClick={async () => await createDreamDescription()}
+                            color={ theme.quaternary }
+                            textColor={ theme.textColor }
                         />
                         <CustomButton
-                            msg="Enviar Áudio"
+                            msg="Descrever Sonho por Áudio"
+                            color={ theme.quaternary }
+                            textColor={ theme.textColor }
                         />
                     </>
             }

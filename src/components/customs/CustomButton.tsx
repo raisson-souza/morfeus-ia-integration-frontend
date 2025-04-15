@@ -7,6 +7,7 @@ type CustomButtonProps = {
     isBold? : boolean
     tooltipMsg? : string
     type? : "button" | "reset" | "submit"
+    textColor?: string
 }
 
 export default function CustomButton({
@@ -16,6 +17,7 @@ export default function CustomButton({
     isBold = true,
     tooltipMsg = "",
     type = "button",
+    textColor = "black",
 } : CustomButtonProps) {
     const button = (
         <button
@@ -26,8 +28,9 @@ export default function CustomButton({
                 borderRadius: "10px",
             }}
             type={ type }
+            color={ textColor }
         >
-            { isBold ? <b>{ msg }</b> : <>{ msg }</> }
+            { isBold ? <b style={{ color: textColor }}>{ msg }</b> : <>{ msg }</> }
         </button>
     )
 
