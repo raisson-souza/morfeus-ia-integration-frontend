@@ -45,9 +45,32 @@ export default function SelectedInterpretation({
     ) => {
         if (!msg) return <></>
 
+        const customStyle = side === "user"
+            ? {
+                backgroundColor: theme.terciary,
+                alignSelf: "flex-end",
+                marginRight: 20,
+                padding: 10,
+                borderTopLeftRadius: 15,
+            }
+            : {
+                backgroundColor: theme.quaternary,
+                alignSelf: "flex-start",
+                marginLeft: 20,
+                paddingLeft: 26, // Correção do markdown
+                paddingRight: 10,
+                paddingTop: 10,
+                paddingBottom: 10,
+                borderTopRightRadius: 15,
+            }
+
         return <Box.Column
             style={{
                 color: "white",
+                width: "75%",
+                borderBottomLeftRadius: 15,
+                borderBottomRightRadius: 15,
+                ...customStyle,
             }}
         >
             {
@@ -70,14 +93,15 @@ export default function SelectedInterpretation({
             backgroundColor: theme.secondary,
         }}
     >
-        <CustomButton
-            msg="Criar Nova Interpretação"
-            onClick={() => setIsCreating(true)}
-        />
         {
             loading
                 ? <h2>Carregando...</h2>
-                : <Box.Column>
+                : <Box.Column
+                    style={{
+                        paddingTop: 15,
+                        gap: 10,
+                    }}
+                >
                     { renderMessage(interpretation!.dream, interpretation!.title, "user") }
                     { renderMessage(interpretation!.dreamOntopsychologyInterpretation, "Interpretação Ontopsicológica", "ai") }
                     { renderMessage(interpretation!.dreamPsychoanalysisInterpretation, "Interpretação Psicanalística", "ai") }
@@ -90,6 +114,10 @@ export default function SelectedInterpretation({
                             />
                             : <></>
                     }
+                    <CustomButton
+                        msg="Criar Nova Interpretação"
+                        onClick={() => setIsCreating(true)}
+                    />
                 </Box.Column>
         }
     </Box.Column>
