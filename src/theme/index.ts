@@ -1,8 +1,8 @@
 const theme = {
-    primary: "#00008B",
-    secondary: "#4169E1",
-    terciary: "#12518E",
-    quaternary: "#16436e",
+    primary: "#241628",
+    secondary: "#39233F",
+    terciary: "#4A2F54",
+    quaternary: "#5B3A66",
     textColor: "#fff",
 }
 
