@@ -68,7 +68,9 @@ export default function AuthContextComponent({ children }: AuthContextProps) {
     }
 
     const logoff = async (): Promise<void> => {
-
+        LocalStorage.apiToken.remove()
+        await login()
+            .finally(() => router.push("/"))
     }
 
     if (loading) {
