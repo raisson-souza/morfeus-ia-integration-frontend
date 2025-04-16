@@ -6,6 +6,7 @@ import Box from "../base/Box"
 import CustomButton from "../customs/CustomButton"
 import InterpretationService from "@/services/api/InterpretationService"
 import Loading from "@/assets/loading"
+import Microfone from "../microfone"
 
 type CreatingInterpretationProps = {
     setInterpretationId: Dispatch<SetStateAction<number | null>>
@@ -21,6 +22,7 @@ export default function CreatingInterpretation({
     const [ dreamTitle, setDreamTitle ] = useState<string>("")
     const [ dreamDescription, setDreamDescription ] = useState<string>("")
     const [ creating, setCreating ] = useState<boolean>(false)
+    const [ dreamInputType, setDreamInputType ] = useState<"text" | "audio">("text")
 
     const createDreamDescription = async () => {
         setCreating(true)
@@ -67,18 +69,22 @@ export default function CreatingInterpretation({
                     height: 30,
                 }}
             />
-            <input
-                type="text"
-                autoFocus
-                placeholder="Sonhei que estava..."
-                value={dreamDescription}
-                onChange={(e) => setDreamDescription(e.target.value)}
-                style={{
-                    background: theme.quaternary,
-                    color: theme.textColor,
-                    height: 30,
-                }}
-            />
+            {
+                dreamInputType === "text"
+                    ? <input
+                        type="text"
+                        autoFocus
+                        placeholder="Sonhei que estava..."
+                        value={dreamDescription}
+                        onChange={(e) => setDreamDescription(e.target.value)}
+                        style={{
+                            background: theme.quaternary,
+                            color: theme.textColor,
+                            height: 30,
+                        }}
+                    />
+                    : <Microfone />
+            }
             {
                 creating
                     ? <Box.Center style={{ alignSelf: "center", paddingTop: 20 }}>
@@ -92,9 +98,10 @@ export default function CreatingInterpretation({
                             textColor={ theme.textColor }
                         />
                         <CustomButton
-                            msg="Descrever Sonho por Áudio"
+                            msg={ `Descrever Sonho por ${ dreamInputType === "text" ? "Áudio" : "Texto" }` }
                             color={ theme.quaternary }
                             textColor={ theme.textColor }
+                            onClick={() => { dreamInputType === "text" ? setDreamInputType("audio") : setDreamInputType("text") }}
                         />
                     </>
             }
