@@ -44,11 +44,19 @@ export default function AuthContextComponent({ children }: AuthContextProps) {
     }, [])
 
     const login = async (): Promise<void> => {
+        const apiToken = LocalStorage.apiToken.get()
+
+        if (apiToken) {
+            setIsLogged(true)
+            LocalStorage.apiToken.set(apiToken)
+            router.push("/home")
+            return
+        }
+
         setLoading(true)
         await AuthService.DirectAccess()
             .then(response => {
                 if (response.Success) {
-                    console.log("res", response)
                     setIsLogged(true)
                     LocalStorage.apiToken.set(response.Data)
                     router.push("/home")

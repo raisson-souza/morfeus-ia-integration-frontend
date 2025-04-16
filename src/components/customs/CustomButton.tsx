@@ -8,6 +8,7 @@ type CustomButtonProps = {
     tooltipMsg? : string
     type? : "button" | "reset" | "submit"
     textColor?: string
+    width?: `${ number }%` | number
 }
 
 export default function CustomButton({
@@ -18,6 +19,7 @@ export default function CustomButton({
     tooltipMsg = "",
     type = "button",
     textColor = "black",
+    width = "100%",
 } : CustomButtonProps) {
     const button = (
         <button
@@ -27,6 +29,7 @@ export default function CustomButton({
                 padding: "4px",
                 borderRadius: "10px",
                 cursor: "pointer",
+                width: width,
             }}
             type={ type }
             color={ textColor }
