@@ -37,7 +37,7 @@ export default function Section({
 
     const renderInterpretations = () => {
         if (interpretations.length === 0)
-            return <p>Nenhuma interpretação realizada.</p>
+            return <p style={{ color: theme.textColor, fontSize: 12 }}>Nenhuma interpretação realizada.</p>
 
         return interpretations.map((interpretation, i) => (
             <Box.Column
