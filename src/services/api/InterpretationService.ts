@@ -34,10 +34,17 @@ export default abstract class InterpretationService extends Endpoints {
         })
     }
 
-    static async CreateInterpretationByAudio() {
+    static async CreateInterpretationByAudio(title: string, audioBlob: Blob) {
+        const formData = new FormData()
+        formData.append('upload', audioBlob, 'audio.webm')
+        formData.append('title', title)
+
         return await this.Post<Interpretation>({
             url: "/interpretation/interpretation_by_audio",
             authorization: this.GetAuthorization() ?? undefined,
+            body: formData,
+            ommitDefaultHeader: true,
+            jsonifyBody: false,
         })
     }
 }

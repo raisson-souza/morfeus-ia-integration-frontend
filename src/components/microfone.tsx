@@ -1,9 +1,15 @@
+import { Dispatch, SetStateAction, useRef, useState } from "react"
 import { theme } from "@/theme"
-import { useRef, useState } from "react"
 import Box from "./base/Box"
 import CustomButton from "./customs/CustomButton"
 
-export default function Microfone() {
+export type MicrofoneProps = {
+    setAudioBlob: Dispatch<SetStateAction<Blob | null>>
+}
+
+export default function Microfone({
+    setAudioBlob,
+}: MicrofoneProps) {
     const [ permission, setPermission ] = useState<boolean>(false)
     const [ stream, setStream ] = useState<MediaStream | null>(null)
     const [ isRecording, setIsRecording ] = useState<boolean>(false)
@@ -67,6 +73,7 @@ export default function Microfone() {
             mediaRecorder.current!.onstop = () => {
                 //creates a blob file from the audiochunks data
                 const audioBlob = new Blob(audioChunks, { type: mimeType })
+                setAudioBlob(audioBlob)
 
                 //creates a playable URL from the blob file.
                 const audioUrl = URL.createObjectURL(audioBlob)

@@ -21,6 +21,8 @@ export type SendRequestProps = {
 /** Propriedades da requisição POST */
 export type PostProps = {
     method?: "POST" | "PUT" | "DELETE"
+    ommitDefaultHeader?: boolean
+    jsonifyBody?: boolean
 } & SendRequestProps
 
 /** Propriedades da requisição PUT */

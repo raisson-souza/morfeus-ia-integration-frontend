@@ -53,14 +53,20 @@ export default abstract class Endpoints {
         authorization = undefined,
         body = {},
         method = 'POST',
+        ommitDefaultHeader = false,
+        jsonifyBody = false,
     }: PostProps): Promise<Response<T>> {
+        if (ommitDefaultHeader) {
+            headers = []
+        }
+
         try {
             return await fetch(
                 `${ env.BackendUrl() }${ url }`,
                 {
                     method: method,
                     headers: this.mountHeaders(headers, authorization),
-                    body: JSON.stringify(body)
+                    body: jsonifyBody ? JSON.stringify(body) : body,
                 }
             )
                 .then(async (response) => {

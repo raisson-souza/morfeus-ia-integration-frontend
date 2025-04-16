@@ -21,22 +21,39 @@ export default function CreatingInterpretation({
 }: CreatingInterpretationProps) {
     const [ dreamTitle, setDreamTitle ] = useState<string>("")
     const [ dreamDescription, setDreamDescription ] = useState<string>("")
+    const [ audioBlob, setAudioBlob ] = useState<Blob | null>(null)
     const [ creating, setCreating ] = useState<boolean>(false)
     const [ dreamInputType, setDreamInputType ] = useState<"text" | "audio">("text")
 
-    const createDreamDescription = async () => {
+    const createInterpretation = async () => {
         setCreating(true)
-        await InterpretationService.CreateInterpretation(dreamTitle, dreamDescription)
-            .then(async (response) => {
-                if (response.Success) {
-                    await fetchAllInterpretations()
-                    setInterpretationId(response.Data.id)
-                    setIsCreating(false)
-                    return
-                }
-                alert(response.ErrorMessage)
-            })
-            .finally(() => setCreating(false))
+
+        if (dreamInputType === "text") {
+            await InterpretationService.CreateInterpretation(dreamTitle, dreamDescription)
+                .then(async (response) => {
+                    if (response.Success) {
+                        await fetchAllInterpretations()
+                        setInterpretationId(response.Data.id)
+                        setIsCreating(false)
+                        return
+                    }
+                    alert(response.ErrorMessage)
+                })
+                .finally(() => setCreating(false))
+        }
+        else {
+            await InterpretationService.CreateInterpretationByAudio(dreamTitle, audioBlob!)
+                .then(async (response) => {
+                    if (response.Success) {
+                        await fetchAllInterpretations()
+                        setInterpretationId(response.Data.id)
+                        setIsCreating(false)
+                        return
+                    }
+                    alert(response.ErrorMessage)
+                })
+                .finally(() => setCreating(false))
+        }
     }
 
     return <Box.Column
@@ -83,7 +100,7 @@ export default function CreatingInterpretation({
                             height: 30,
                         }}
                     />
-                    : <Microfone />
+                    : <Microfone setAudioBlob={ setAudioBlob } />
             }
             {
                 creating
@@ -93,7 +110,7 @@ export default function CreatingInterpretation({
                     : <>
                         <CustomButton
                             msg="CRIAR INTERPRETAÇÃO"
-                            onClick={async () => await createDreamDescription()}
+                            onClick={async () => await createInterpretation()}
                             color={ theme.quaternary }
                             textColor={ theme.textColor }
                         />
