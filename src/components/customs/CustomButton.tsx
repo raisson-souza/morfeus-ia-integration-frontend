@@ -26,6 +26,7 @@ export default function CustomButton({
                 backgroundColor: color,
                 padding: "4px",
                 borderRadius: "10px",
+                cursor: "pointer",
             }}
             type={ type }
             color={ textColor }

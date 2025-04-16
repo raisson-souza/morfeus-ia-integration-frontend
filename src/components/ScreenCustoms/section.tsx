@@ -45,6 +45,7 @@ export default function Section({
                 key={ i }
                 style={{
                     borderBottom: "1px solid white",
+                    cursor: "pointer",
                 }}
             >
                 <p
