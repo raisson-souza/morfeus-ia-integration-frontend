@@ -47,4 +47,18 @@ export default abstract class InterpretationService extends Endpoints {
             jsonifyBody: false,
         })
     }
+
+    static async RegenerateInterpretation(id: number) {
+        return await this.Post<Interpretation>({
+            url: `/interpretation/regenerate_interpretation/${ id }`,
+            authorization: this.GetAuthorization() ?? undefined,
+        })
+    }
+
+    static async RegenerateImage(id: number) {
+        return await this.Post<string | null>({
+            url: `/interpretation/regenerate_image/${ id }`,
+            authorization: this.GetAuthorization() ?? undefined,
+        })
+    }
 }

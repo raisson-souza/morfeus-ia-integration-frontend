@@ -28,6 +28,7 @@ export default function SelectedInterpretation({
 }: SelectedInterpretationProps) {
     const [ interpretation, setInterpretation ] = useState<Interpretation | null>(null)
     const [ loading, setLoading ] = useState<boolean>(true)
+    const [ loadingImage, setLoadingImage ] = useState<boolean>(false)
 
     const fetchInterpretation = async () => {
         setLoading(true)
@@ -45,6 +46,35 @@ export default function SelectedInterpretation({
     useEffect(() => {
         fetchInterpretation()
     }, [interpretationId])
+
+    const regenerateInterpretation = async () => {
+        setLoading(true)
+        await InterpretationService.RegenerateInterpretation(interpretationId)
+            .then(response => {
+                if (response.Success) {
+                    setInterpretation(response.Data)
+                    return
+                }
+                alert(response.ErrorMessage)
+            })
+            .finally(() => setLoading(false))
+    }
+
+    const regenerateImage = async () => {
+        setLoadingImage(true)
+        await InterpretationService.RegenerateImage(interpretationId)
+            .then(response => {
+                if (response.Success) {
+                    setInterpretation({
+                        ...interpretation!,
+                        imagePath: response.Data
+                    })
+                    return
+                }
+                alert(response.ErrorMessage)
+            })
+            .finally(() => setLoadingImage(false))
+    }
 
     const RenderMessage = ({
         children,
@@ -145,24 +175,41 @@ export default function SelectedInterpretation({
                         side="ai"
                     >
                         {
-                            imagePath
-                                ? <img
-                                    src={ imagePath }
-                                    width={400}
-                                    height={400}
-                                />
-                                : <p>Não foi possível gerar a imagem.</p>
+                            loadingImage
+                                ? <Box.Center>
+                                    <Loading />
+                                </Box.Center>
+                                : imagePath
+                                    ? <img
+                                        src={ imagePath }
+                                        width={400}
+                                        height={400}
+                                    />
+                                    : <Box.Center>
+                                        <CustomButton
+                                            msg="Gerar Imagem Descritiva"
+                                            onClick={async () => await regenerateImage()}
+                                            color={ theme.textColor }
+                                        />
+                                    </Box.Center>
                         }
                     </RenderMessage>
                     <RenderMessage
                         title=""
                         side="user"
                     >
-                        <CustomButton
-                            msg="Criar Nova Interpretação"
-                            onClick={() => setIsCreating(true)}
-                            color={ theme.textColor }
-                        />
+                        <Box.Row>
+                            <CustomButton
+                                msg="Criar Nova Interpretação"
+                                onClick={() => setIsCreating(true)}
+                                color={ theme.textColor }
+                            />
+                            <CustomButton
+                                msg="Recriar Interpretações"
+                                onClick={async () => await regenerateInterpretation()}
+                                color={ theme.textColor }
+                            />
+                        </Box.Row>
                     </RenderMessage>
                 </Box.Column>
         }

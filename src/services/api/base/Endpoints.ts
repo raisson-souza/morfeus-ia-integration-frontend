@@ -54,7 +54,7 @@ export default abstract class Endpoints {
         body = {},
         method = 'POST',
         ommitDefaultHeader = false,
-        jsonifyBody = false,
+        jsonifyBody = true,
     }: PostProps): Promise<Response<T>> {
         if (ommitDefaultHeader) {
             headers = []
