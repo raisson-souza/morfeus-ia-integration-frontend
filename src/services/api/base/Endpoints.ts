@@ -17,6 +17,8 @@ export default abstract class Endpoints {
         if (authorization)
             requestHeaders.push({ "Authorization": authorization })
 
+        requestHeaders.push({ "ngrok-skip-browser-warning": "true" })
+
         return requestHeaders.reduce((previousHeader, currentHeader) => {
             return { ...previousHeader, ...currentHeader }
         }, {} as any)
