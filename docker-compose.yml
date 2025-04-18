@@ -1,0 +1,11 @@
+version: '3'
+services:
+  morfeusiafrontend:
+    build:
+      context: .
+      dockerfile: morfeus_ia_frontend.dockerfile
+    restart: always
+    container_name: morfeusiafrontend
+    env_file: ".env"
+    ports:
+      - "8001:8001"
