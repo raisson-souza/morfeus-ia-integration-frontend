@@ -29,7 +29,7 @@ export default function Header() {
             }}
         >
             <h3
-                onClick={() => window.open("https://expo.dev/accounts/raissonrai/projects/morfeus/builds/2c727b59-71f6-49ae-8341-e4924cb16236", "_blank")}
+                onClick={() => window.open("https://expo.dev/accounts/raissonrai/projects/morfeus/builds/abe84412-11b8-4939-bc82-156e73b3d758", "_blank")}
                 style={{
                     color: theme.textColor,
                     cursor: "pointer",
